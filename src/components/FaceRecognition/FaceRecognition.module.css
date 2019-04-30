@@ -1,0 +1,11 @@
+.container {
+    width: 600px;
+    margin: 45px auto;
+}
+
+.image {
+    border-radius: 30px;
+    box-shadow: 5px 5px 10px var(--shadow-strong);
+    display: block;
+    max-width: 100%;
+}

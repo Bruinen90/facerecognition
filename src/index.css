@@ -1,14 +1,31 @@
+:root {
+    --color-red: #f68084;
+    --color-dark: #08415C;
+    --color-grey: #6B818C;
+    --color-blue: #a6c0fe;
+    --color-beyge: #F1BF98;
+    --color-light: #EEE5E9;
+    --shadow-medium: rgba(0,0,0,.33);
+    --shadow-strong: rgba(0,0,0,.5);
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+*:focus {
+    outline: none;
+}
+
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: 'Courier New', Courier, monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  background-image: linear-gradient(120deg, #a6c0fe 0%, #f68084 100%);
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
 }

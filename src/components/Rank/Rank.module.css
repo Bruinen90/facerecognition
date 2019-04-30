@@ -1,0 +1,11 @@
+.container {
+    font-size: 2rem;
+    text-align: center;
+    color: var(--color-dark);
+    margin-bottom: 5vh;
+}
+
+.rank {
+    font-size: 4rem;
+    margin: 0;
+}
