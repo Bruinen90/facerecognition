@@ -3,6 +3,7 @@ import styles from './App.module.css';
 
 import Nav from './components/Nav/Nav';
 import Logo from './components/Logo/Logo';
+import SignIn from './components/SignIn/SignIn';
 import Rank from './components/Rank/Rank';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
@@ -20,7 +21,17 @@ class App extends React.Component {
         this.state = {
             input: '',
             imgUrl: '',
+            boxes: [],
+            route: 'signin',
         }
+    }
+
+    calculateFaceLocation = (input) => {
+        console.log(input.outputs[0].data.regions[0].region_info.bounding_box);
+        const boxes = input.outputs[0].data.regions.map(region => (
+            region.region_info.bounding_box
+        ));
+        this.setState({boxes: boxes})
     }
 
     onInputChange = (event) => {
@@ -28,21 +39,19 @@ class App extends React.Component {
     }
 
     onClickSubmit = () => {
-        console.log(this.state.input)
         this.setState({imgUrl: this.state.input})
         app.models.predict(
             Clarifai.FACE_DETECT_MODEL,
             this.state.input)
-            .then(
-                function(response) {
-                  console.log(response.outputs[0].data.regions)
-                },
-                function(err) {
-                  console.log(err)
-                }
-  );
-
+            .then(response => this.calculateFaceLocation(response))
+            .catch(err => console.log(err))
     }
+
+    onRouteChange = (target) => {
+        this.setState({route: target})
+    }
+
+
     render() {
         return (
             <div className={styles.container}>
@@ -60,17 +69,28 @@ class App extends React.Component {
                         }}
                     }
                 />
-                <Nav />
+                <Nav
+                    onRouteChange={(target)=>this.onRouteChange(target)}
+                />
                 <Logo />
                 <div className={styles.mainCont}>
-                    <Rank />
-                    <ImageLinkForm
-                        onChangeInput={this.onInputChange}
-                        onClickSubmit={this.onClickSubmit}
-                    />
-                    <FaceRecognition
-                        imgUrl = {this.state.input}
-                    />
+                    {this.state.route === 'signin' ?
+                        <SignIn
+                            onRouteChange={(target)=>this.onRouteChange(target)}
+                        />
+                        :
+                        <React.Fragment>
+                            <Rank />
+                            <ImageLinkForm
+                                onChangeInput={this.onInputChange}
+                                onClickSubmit={this.onClickSubmit}
+                            />
+                            <FaceRecognition
+                                imgUrl = {this.state.input}
+                                boxes = {this.state.boxes}
+                            />
+                        </React.Fragment>
+                    }
                 </div>
             </div>
         );

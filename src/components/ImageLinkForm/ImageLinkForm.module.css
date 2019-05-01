@@ -41,6 +41,7 @@
 @media (min-width: 768px) {
     .container {
         width: 75vw;
+        max-width: 1200px;
         padding: 5vh;
     }
 

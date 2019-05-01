@@ -1,6 +1,7 @@
 .container {
     width: 600px;
     margin: 45px auto;
+    position: relative;
 }
 
 .image {
@@ -8,4 +9,9 @@
     box-shadow: 5px 5px 10px var(--shadow-strong);
     display: block;
     max-width: 100%;
+}
+
+.box {
+    position: absolute;
+    border: 3px dashed #fff;
 }

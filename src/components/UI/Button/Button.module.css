@@ -5,26 +5,43 @@
     border: 0;
     border-radius: 30px;
     font-size: 1rem;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.container:active {
+    transform: scale(.9);
 }
 
 .red {
     background-color: var(--color-red);
+    border-color: var(--color-red);
 }
 
 .blue {
     background-color: var(--color-blue);
+    border-color: var(--color-blue);
 }
 
 .dark {
     background-color: var(--color-dark);
+    border-color: var(--color-dark);
 }
 
 .lightText {
     color: var(--color-light);
 }
 
+.justFrame {
+    background-color: transparent;
+}
+
 @media (min-width: 768px) {
     .container {
         padding: 15px 30px;
+    }
+
+    .container:hover {
+        filter: brightness(150%);
     }
 }

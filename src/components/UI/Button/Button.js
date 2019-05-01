@@ -2,14 +2,10 @@ import React from 'react';
 import styles from './Button.module.css';
 
 const Button = (props) => {
+    const classList = ('container ' + props.classes).split(' ')
+                        .map(classProp => styles[classProp])
     return(
-        <button className={[
-            styles.container,
-            props.red && styles.red,
-            props.blue && styles.blue,
-            props.dark && styles.dark,
-            props.lightText && styles.lightText,
-        ].join(' ')}
+        <button className={classList.join(' ')}
             onClick={props.click}
         >
             {props.children}

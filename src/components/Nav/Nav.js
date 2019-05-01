@@ -6,8 +6,8 @@ const Nav = (props) => {
     return(
         <nav className={styles.container}>
             <Button
-                dark = {true}
-                lightText = {true}
+                classes='dark lightText'
+                click={()=>props.onRouteChange('signin')}
             >
                 Sign out
             </Button>
