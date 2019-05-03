@@ -36,6 +36,18 @@
     background-color: transparent;
 }
 
+.fullWidth {
+    width: 100%;
+}
+
+.topMargin {
+    margin-top: 15px;
+}
+
+.marginRight {
+    margin-right: 15px;
+}
+
 @media (min-width: 768px) {
     .container {
         padding: 15px 30px;

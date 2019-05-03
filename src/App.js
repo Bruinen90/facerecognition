@@ -4,6 +4,7 @@ import styles from './App.module.css';
 import Nav from './components/Nav/Nav';
 import Logo from './components/Logo/Logo';
 import SignIn from './components/SignIn/SignIn';
+import Register from './components/Register/Register';
 import Rank from './components/Rank/Rank';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
@@ -23,6 +24,7 @@ class App extends React.Component {
             imgUrl: '',
             boxes: [],
             route: 'signin',
+            signedIn: false,
         }
     }
 
@@ -48,11 +50,17 @@ class App extends React.Component {
     }
 
     onRouteChange = (target) => {
+        if(target === 'signin') {
+            this.setState({signedIn: false})
+        } else if(target === 'home') {
+            this.setState({signedIn: true})
+        }
         this.setState({route: target})
     }
 
 
     render() {
+        const { input, boxes, route, signedIn } = this.state;
         return (
             <div className={styles.container}>
                 <Particles
@@ -71,14 +79,11 @@ class App extends React.Component {
                 />
                 <Nav
                     onRouteChange={(target)=>this.onRouteChange(target)}
+                    signedIn={signedIn}
                 />
                 <Logo />
                 <div className={styles.mainCont}>
-                    {this.state.route === 'signin' ?
-                        <SignIn
-                            onRouteChange={(target)=>this.onRouteChange(target)}
-                        />
-                        :
+                    {route === 'home' ?
                         <React.Fragment>
                             <Rank />
                             <ImageLinkForm
@@ -86,10 +91,20 @@ class App extends React.Component {
                                 onClickSubmit={this.onClickSubmit}
                             />
                             <FaceRecognition
-                                imgUrl = {this.state.input}
-                                boxes = {this.state.boxes}
+                                imgUrl = {input}
+                                boxes = {boxes}
                             />
-                        </React.Fragment>
+                        </React.Fragment> :
+                        (
+                            route === 'signin' ?
+                            <SignIn
+                                onSignIn={(target)=>this.onRouteChange(target)}
+                                onClickRegister={(target)=>this.onRouteChange(target)}
+                            /> :
+                            <Register
+                                onClickSignIn={(target)=>this.onRouteChange(target)}
+                            />
+                        )
                     }
                 </div>
             </div>

@@ -1,41 +1,84 @@
 import React from 'react';
 import styles from './SignIn.module.css';
 
+import Form from '../UI/Form/Form';
+import Header from '../UI/Header/Header';
+import TextInput from '../UI/TextInput/TextInput';
 import Button from '../UI/Button/Button';
 
-const SignIn = (props) => {
-    return(
-        <div className={styles.container}>
-            <form className={styles.form}>
-                <h2 className={styles.header}>
+class SignIn extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            signInEmail: '',
+            signInPassword: '',
+        }
+    }
+
+    onEmailChange = (e) => {
+        this.setState({signInEmail: e.target.value})
+    }
+
+    onPasswordChange = (e) => {
+        this.setState({signInPassword: e.target.value})
+    }
+
+    onSubmitSignIn = () => {
+        fetch('http://localhost:3000/signin', {
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                email: this.state.signInEmail,
+                password: this.state.signInPassword
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if(data === 'success') {
+                    this.props.onSignIn('home')
+                }
+            })
+    }
+
+    render() {
+        return(
+            <Form>
+                <Header>
                     Sign In
-                </h2>
-                <div className={styles.row}>
-                    <label htmlFor="email">Email</label>
-                    <input type="email" name="email" />
-                </div>
-                <div className={styles.row}>
-                    <label htmlFor="password">Password</label>
-                    <input type="password" name="password" />
-                </div>
+                </Header>
+                <TextInput
+                    name='email'
+                    type='email'
+                    labelText='Email address'
+                    onChange={(e)=>this.onEmailChange(e)}
+                />
+                <TextInput
+                    name='password'
+                    type='password'
+                    labelText='Password'
+                    onChange={(e)=>this.onPasswordChange(e)}
+                />
                 <div className={styles.bottomRow}>
                     <div className={styles.buttonCont}>
                         <Button
                             classes='dark lightText'
-                            click={()=>props.onRouteChange('home')}
+                            click={()=>this.onSubmitSignIn()}
                         >
                             Sign in
                         </Button>
                     </div>
                     <div className={styles.buttonCont}>
-                        <Button classes='dark justFrame'>
+                        <Button
+                            classes='dark justFrame'
+                            click={()=>this.props.onClickRegister('register')}
+                        >
                             Register
                         </Button>
                     </div>
-                </div>
-            </form>
-        </div>
-    );
+                    </div>
+            </Form>
+        );
+    }
 };
 
 export default SignIn;
