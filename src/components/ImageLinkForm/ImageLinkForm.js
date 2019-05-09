@@ -11,10 +11,10 @@ const ImageLinkForm = (props) => {
                     className={styles.urlInput}
                     placeholder="Your image url address"
                     onChange={props.onChangeInput}
+                    value={props.inputValue}
                 />
                 <Button
-                    dark={true}
-                    lightText={true}
+                    classes='red lightText bold'
                     click={props.onClickSubmit}
                 >
                     Detect faces

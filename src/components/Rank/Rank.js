@@ -4,9 +4,9 @@ import styles from './Rank.module.css';
 const Rank = (props) => {
     return(
         <div className={styles.container}>
-            Your current rank is
+            You have detected
             <h2 className={styles.rank}>
-                #2
+                {props.detections} faces
             </h2>
         </div>
     );

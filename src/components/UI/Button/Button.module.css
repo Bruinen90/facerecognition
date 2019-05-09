@@ -32,6 +32,10 @@
     color: var(--color-light);
 }
 
+.bold {
+    font-weight: bold;
+}
+
 .justFrame {
     background-color: transparent;
 }

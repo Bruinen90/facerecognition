@@ -16,20 +16,43 @@ const app = new Clarifai.App({
  apiKey: '440f2609d58f49fb9e3fbd0e9d32e68d'
 });
 
+const initialState = {
+    input: '',
+    inputValue: '',
+    imgUrl: '',
+    boxes: [],
+    route: 'signin',
+    signedIn: false,
+    user: {
+        id: '',
+        name: '',
+        email: '',
+        entries: 0,
+        joined: '',
+    }
+}
+
 class App extends React.Component {
     constructor() {
         super();
         this.state = {
             input: '',
+            inputValue: '',
             imgUrl: '',
             boxes: [],
             route: 'signin',
             signedIn: false,
+            user: {
+                id: '',
+                name: '',
+                email: '',
+                entries: 0,
+                joined: '',
+            }
         }
     }
 
     calculateFaceLocation = (input) => {
-        console.log(input.outputs[0].data.regions[0].region_info.bounding_box);
         const boxes = input.outputs[0].data.regions.map(region => (
             region.region_info.bounding_box
         ));
@@ -37,7 +60,11 @@ class App extends React.Component {
     }
 
     onInputChange = (event) => {
-        this.setState({input: event.target.value});
+        this.setState({
+            input: event.target.value,
+            inputValue: event.target.value,
+            boxes: [],
+        });
     }
 
     onClickSubmit = () => {
@@ -45,17 +72,55 @@ class App extends React.Component {
         app.models.predict(
             Clarifai.FACE_DETECT_MODEL,
             this.state.input)
-            .then(response => this.calculateFaceLocation(response))
+            .then(response => {
+            if (response) {
+                fetch('http://localhost:3000/image', {
+                    method: 'put',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                      id: this.state.user.id,
+                      facesCount: response.outputs[0].data.regions.length
+                    })
+                })
+                    .then(response => response.json())
+                    .then(count => {
+                        this.setState({
+                            inputValue: '',
+                            user: {
+                                ...this.state.user,
+                                entries: count,
+                            }
+                        })
+                    })
+                    .catch(console.log)
+                }
+                this.calculateFaceLocation(response);
+
+            })
             .catch(err => console.log(err))
     }
 
     onRouteChange = (target) => {
         if(target === 'signin') {
-            this.setState({signedIn: false})
+            this.setState(initialState)
         } else if(target === 'home') {
             this.setState({signedIn: true})
         }
-        this.setState({route: target})
+        this.setState({
+            route: target,
+        })
+    }
+
+    loadUser = (data) => {
+        this.setState({
+            user: {
+                id: data.id,
+                name: data.username,
+                email: data.email,
+                entries: data.entries,
+                joined: data.joined,
+            }
+        })
     }
 
 
@@ -85,10 +150,13 @@ class App extends React.Component {
                 <div className={styles.mainCont}>
                     {route === 'home' ?
                         <React.Fragment>
-                            <Rank />
+                            <Rank
+                                detections = {this.state.user.entries}
+                            />
                             <ImageLinkForm
                                 onChangeInput={this.onInputChange}
                                 onClickSubmit={this.onClickSubmit}
+                                inputValue={this.state.inputValue}
                             />
                             <FaceRecognition
                                 imgUrl = {input}
@@ -98,11 +166,13 @@ class App extends React.Component {
                         (
                             route === 'signin' ?
                             <SignIn
-                                onSignIn={(target)=>this.onRouteChange(target)}
-                                onClickRegister={(target)=>this.onRouteChange(target)}
+                                loadUser = {this.loadUser}
+                                onSignIn={this.onRouteChange}
+                                onClickRegister={this.onRouteChange}
                             /> :
                             <Register
-                                onClickSignIn={(target)=>this.onRouteChange(target)}
+                                onRouteChange={this.onRouteChange}
+                                loadUser = {this.loadUser}
                             />
                         )
                     }
