@@ -10,11 +10,6 @@ import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 
 import Particles from 'react-particles-js';
-import Clarifai from 'clarifai';
-
-const app = new Clarifai.App({
- apiKey: '440f2609d58f49fb9e3fbd0e9d32e68d'
-});
 
 const initialState = {
     input: '',
@@ -68,13 +63,18 @@ class App extends React.Component {
     }
 
     onClickSubmit = () => {
-        this.setState({imgUrl: this.state.input})
-        app.models.predict(
-            Clarifai.FACE_DETECT_MODEL,
-            this.state.input)
+        this.setState({imgUrl: this.state.input});
+            fetch('https://murmuring-beach-74234.herokuapp.com/imageurl', {
+                method: 'post',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                  input: this.state.input
+                })
+            })
+            .then(response => response.json())
             .then(response => {
             if (response) {
-                fetch('http://localhost:3000/image', {
+                fetch('https://murmuring-beach-74234.herokuapp.com/image', {
                     method: 'put',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
