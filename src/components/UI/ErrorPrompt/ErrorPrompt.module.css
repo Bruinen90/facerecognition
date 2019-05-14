@@ -1,0 +1,24 @@
+.container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 15px;
+    background-color: var(--color-red);
+    border-radius: 30px;
+    width: 100%;
+    border: 2px solid var(--color-dark);
+    font-weight: bold;
+    color: var(--color-light);
+    font-size: .7rem;
+}
+
+.errorIcon {
+    height: 1.5em;
+}
+
+@media (min-width: 768px) {
+    .container {
+        padding: 15px 30px;
+        font-size: 1rem;
+    }
+}

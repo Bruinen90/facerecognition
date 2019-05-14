@@ -4,7 +4,7 @@ import styles from './Rank.module.css';
 const Rank = (props) => {
     return(
         <div className={styles.container}>
-            You have detected
+            {props.username}, you have detected
             <h2 className={styles.rank}>
                 {props.detections} faces
             </h2>

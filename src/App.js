@@ -151,6 +151,7 @@ class App extends React.Component {
                     {route === 'home' ?
                         <React.Fragment>
                             <Rank
+                                username = {this.state.user.name}
                                 detections = {this.state.user.entries}
                             />
                             <ImageLinkForm

@@ -1,5 +1,5 @@
 .container {
-    width: 600px;
+    width: 100%;
     margin: 45px auto;
     position: relative;
 }
@@ -14,4 +14,10 @@
 .box {
     position: absolute;
     border: 3px dashed #fff;
+}
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 600px;
+    }
 }

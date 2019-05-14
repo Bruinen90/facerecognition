@@ -1,3 +1,8 @@
+.inputsCont {
+    width: 95%;
+    margin: auto;
+}
+
 .bottomRow {
     text-align: center;
     margin-top: 45px;
@@ -5,4 +10,10 @@
 
 .buttonCont {
     margin: 15px 0;
+}
+
+@media (min-width: 768px) {
+    .inputsCont {
+        width: 80%;
+    }
 }

@@ -6,19 +6,54 @@ import Header from '../UI/Header/Header';
 import TextInput from '../UI/TextInput/TextInput';
 import Button from '../UI/Button/Button';
 
+const formFieldsReq = {
+    username: {
+        minLength: 3,
+        maxLength: 100,
+        unique: true,
+    },
+    email: {
+        minLength: 5,
+        maxLength: 100,
+        emailValidation: true,
+        unique: true,
+    },
+    password: {
+        minLength: 6,
+        maxLength: 100,
+        mustContainNumber: true,
+    },
+    re_password: {
+        equalTo: 'password',
+    },
+}
+
 class Register extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
-            email: '',
-            password: '',
-            re_password: '',
+            username: {
+                value: '',
+                status: '',
+            },
+            email: {
+                value: '',
+                status: '',
+            },
+            password: {
+                value: '',
+                status: '',
+            },
+            re_password: {
+                value: '',
+                status: '',
+            },
         }
     }
 
     onInputChange = (e, stateObjToUpdate) => {
-        this.setState({[stateObjToUpdate]: e.target.value})
+        this.setState({
+            [stateObjToUpdate]: {value: e.target.value}})
     }
 
     onClickRegister = () => {
@@ -26,9 +61,9 @@ class Register extends React.Component {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                username: this.state.username,
-                email: this.state.email,
-                password: this.state.password
+                username: this.state.username.value,
+                email: this.state.email.value,
+                password: this.state.password.value
             })
         })
             .then(response => response.json())

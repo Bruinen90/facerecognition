@@ -5,6 +5,7 @@ import Form from '../UI/Form/Form';
 import Header from '../UI/Header/Header';
 import TextInput from '../UI/TextInput/TextInput';
 import Button from '../UI/Button/Button';
+import ErrorPrompt from '../UI/ErrorPrompt/ErrorPrompt';
 
 class SignIn extends React.Component {
     constructor(props) {
@@ -12,6 +13,7 @@ class SignIn extends React.Component {
         this.state = {
             signInEmail: '',
             signInPassword: '',
+            errorLogin: false,
         }
     }
 
@@ -37,6 +39,8 @@ class SignIn extends React.Component {
                 if(user.id) {
                     this.props.loadUser(user)
                     this.props.onSignIn('home')
+                } else {
+                    this.setState({ errorLogin: true })
                 }
             })
     }
@@ -47,18 +51,26 @@ class SignIn extends React.Component {
                 <Header>
                     Sign In
                 </Header>
-                <TextInput
-                    name='email'
-                    type='email'
-                    labelText='Email address'
-                    onChange={(e)=>this.onEmailChange(e)}
-                />
-                <TextInput
-                    name='password'
-                    type='password'
-                    labelText='Password'
-                    onChange={(e)=>this.onPasswordChange(e)}
-                />
+                <div className={styles.inputsCont}>
+                    <TextInput
+                        name='email'
+                        type='email'
+                        labelText='Email address'
+                        onChange={(e)=>this.onEmailChange(e)}
+                    />
+                    <TextInput
+                        name='password'
+                        type='password'
+                        labelText='Password'
+                        onChange={(e)=>this.onPasswordChange(e)}
+                    />
+                    {
+                        this.state.errorLogin &&
+                        <ErrorPrompt
+                            message='Incorrect email or password'
+                        />
+                    }
+                </div>
                 <div className={styles.bottomRow}>
                     <div className={styles.buttonCont}>
                         <Button
